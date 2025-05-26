@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("https://your-railway-url"); 
+const socket = io("https://narrativepsychapp.onrender.com"); 
 
 const stages = [
   "1. Share your Story",
@@ -12,12 +12,14 @@ const stages = [
 ];
 
 function Chat() {
+  
   const [partnerConnected, setPartnerConnected] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [stageIndex, setStageIndex] = useState(0);
 
   useEffect(() => {
+    
     socket.on("partner_found", () => {
       setPartnerConnected(true);
       setMessages(prev => [...prev, { system: true, text: "Partner connected!" }]);
@@ -48,6 +50,7 @@ function Chat() {
   };
 
   const nextStage = () => {
+
     if (stageIndex < stages.length - 1) {
       setStageIndex(stageIndex + 1);
       setMessages(prev => [
