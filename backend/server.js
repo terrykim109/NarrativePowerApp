@@ -1,19 +1,20 @@
 const express = require("express");
 const http = require("http");
-const { Server } = require("socket.io");
-const cors = require("cors");
+const cors = require("cors"); // Middleware to enable cross-origin requests
+const { Server } = require("socket.io"); // Socket.IO Server class  for a WebSocket server
 
-const app = express();
+
+const app = express(); // Express app instance
 const server = http.createServer(app);
-const io = new Server(server, {
+const io = new Server(server, {     // New Socket.IO server instance
   cors: {
-    origin: "*", 
-    methods: ["GET", "POST"]
+    origin: "*",  // Allow all origins
+    methods: ["GET", "POST"] // Get and Post methods
   }
 });
 
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // For CORS all routes
+app.use(express.json()); // For JSON
 
 
 let waitingUser = null;
@@ -61,6 +62,7 @@ io.on("connection", (socket) => {
 });
 
 app.get("/", (req, res) => {
+  console.log("GET / route hit");
   res.send("Server is up and running");
 });
 
