@@ -10,7 +10,8 @@ const io = new Server(server, {     // New Socket.IO server instance
   cors: {
     origin: "*",  // Allow all origins
     methods: ["GET", "POST"] // Get and Post methods
-  }
+  },
+  path: "/socket.io"
 });
 
 app.use(cors()); // For CORS all routes

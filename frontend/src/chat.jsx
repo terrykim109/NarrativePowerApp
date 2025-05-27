@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("https://narrativepsychapp.onrender.com"); 
+const socket = io("https://narrativepsychapp.onrender.com", {
+  path: "/socket.io",
+  transports: ["websocket"]
+});
 
 const stages = [
   "1. Share your Story",
@@ -62,7 +65,7 @@ function Chat() {
 
   return (
     <div style={{ padding: 20, maxWidth: 600, margin: "auto" }}>
-      <h2>Narrative Therapy Chat</h2>
+      <h2>Narrative Power Chat</h2>
       <h4>Current Stage: {stages[stageIndex]}</h4>
 
       <div style={{ height: 300, overflowY: "scroll", border: "1px solid gray", padding: 10 }}>
