@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("https://narrativepsychapp.onrender.com"); 
+const socket = io("https://narrativepsychapp.onrender.com", {
+  path: "/socket.io",
+  transports: ["websocket"]
+});
 
 const stages = [
   "1. Share your Story",
