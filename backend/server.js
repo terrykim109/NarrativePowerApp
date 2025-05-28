@@ -2,7 +2,26 @@ const express = require("express");
 const http = require("http");
 const cors = require("cors"); // Middleware to enable cross-origin requests
 const { Server } = require("socket.io"); // Socket.IO Server class  for a WebSocket server
+const OpenAI = require("openai");
+const dotenv = require("dotenv");
+dotenv.config();
 
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY 
+});
+
+async function getGPTReply(message) {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "user", content: message }]
+    });
+    return response.choices[0].message.content;
+  } catch (error) {
+    console.error("OpenAI error:", error);
+    return "Sorry, I couldn’t get a response.";
+  }
+}
 
 const app = express(); // Express app instance
 const server = http.createServer(app);
@@ -65,6 +84,17 @@ io.on("connection", (socket) => {
 app.get("/", (req, res) => {
   console.log("GET / route hit");
   res.send("Server is up and running");
+});
+
+app.post("/api/chatgpt", async (req, res) => {
+  const { message } = req.body;
+  try {
+    const reply = await getGPTReply(message);
+    res.json({ reply });
+  } catch (error) {
+    console.error("GPT error:", error.message);
+    res.status(500).json({ error: "Failed to get GPT response" });
+  }
 });
 
 const PORT = process.env.PORT || 3001;
