@@ -43,25 +43,27 @@ io.on("connection", (socket) => {
   
     console.log("User connected:", socket.id);
 
-  if (waitingUser) {
+    if (waitingUser) {
+    const partnerSocket = io.sockets.sockets.get(waitingUser);
 
-    const partnerId = waitingUser;
-    waitingUser = null;
-    
-    socket.join(partnerId);
-    socket.partner = partnerId;
-    
-    io.to(partnerId).emit("partner_found", socket.id);
-    socket.emit("partner_found", partnerId);
-  } 
-  else {
+    if (partnerSocket) {
+      partnerSocket.partner = socket.id;
+      socket.partner = waitingUser;
+
+      waitingUser = null;
+
+      io.to(partnerSocket.id).emit("partner_found", socket.id);
+      socket.emit("partner_found", partnerSocket.id);
+    } else {
+      waitingUser = socket.id;
+    }
+  } else {
     waitingUser = socket.id;
   }
 
   socket.on("send_message", (data) => {
-    
     const partnerId = socket.partner;
-    
+
     if (partnerId) {
       io.to(partnerId).emit("receive_message", data);
     }
