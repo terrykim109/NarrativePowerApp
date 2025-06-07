@@ -1,4 +1,4 @@
-# NarrativePsychApp
+# NarrativePowerApp
 
 Lots of people struggle with mental disorders, but there can be various obstacles to accessing the help they need. I have had my own various struggles throughout my life. Unfortunately, the fact of the matter is that there can be significant barriers to accessing therapy at the right time, in the right place, and in the right amount for the majority of the population. 
 
